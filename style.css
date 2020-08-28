@@ -1,0 +1,51 @@
+body {
+    margin: 0;
+    background-color: #000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+a {
+    background-color: rgb(32, 73, 207);
+    border: 1px solid rgb(38, 83, 231);
+    color: #fff;
+    padding: 0.8em 1.2em;
+    font-weight: bold;
+    border-radius: 0.6em;
+    text-decoration: none;
+}
+
+.traffic-light {
+    background-color: rgb(85, 84, 84);
+    border: 4px solid rgb(180, 180, 180);
+    display: block;
+    width: min-content;
+    padding: 1em;
+    align-self: center;
+    border-radius: 2em;
+    margin: 5em 0;
+}
+
+.bulb {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0.5em;
+}
+
+.bulb-red {
+    background-color: red;
+}
+
+.bulb-yellow {
+    background-color: yellow;
+}
+
+.bulb-green {
+    background-color: green;
+}
+
+.bulb-off {
+    background-color: grey;
+}
