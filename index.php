@@ -1,24 +1,9 @@
 <?php
 
-$red = false;
-$yellow = false;
-$green = false;
+require_once './classes/traffic_light.php';
 
-switch ($_GET['state']) {
-    case 1:
-        $yellow = true;
-    case 0:
-        $red = true;
-        break;
-    case 2:
-        $green = true;
-        break;
-    case 3:
-        $yellow = true;
-        break;
-    default:
-        $red = true;
-}
+$traffic_light = new TrafficLight();
+$traffic_light->set_state($_GET['state']);
 
 ?>
 
@@ -31,11 +16,11 @@ switch ($_GET['state']) {
 
 <body>
     <div class="traffic-light">
-        <div class="bulb bulb-red <?= $red ? '' : 'bulb-off' ?>"></div>
-        <div class="bulb bulb-yellow <?= $yellow ? '' : 'bulb-off' ?>"></div>
-        <div class="bulb bulb-green <?= $green ? '' : 'bulb-off' ?>"></div>
+        <div class="bulb <?= $traffic_light->red ? 'bulb-red' : '' ?>"></div>
+        <div class="bulb <?= $traffic_light->yellow ? 'bulb-yellow' : '' ?>"></div>
+        <div class="bulb <?= $traffic_light->green ? 'bulb-green' : '' ?>"></div>
     </div>
-    <a href="/?state=<?= isset($_GET['state']) ? ($_GET['state'] + 1) % 4 : 1 ?>">=></a>
+    <a href="/?state=<?= $traffic_light->get_next_state($_GET['state']) ?>">=></a>
 </body>
 
 </html>
