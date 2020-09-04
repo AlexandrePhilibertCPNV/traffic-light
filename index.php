@@ -2,8 +2,10 @@
 
 require_once './classes/traffic_light.php';
 
+$state = isset($_GET['state']) ? $_GET['state'] : 0;
+
 $traffic_light = new TrafficLight();
-$traffic_light->set_state($_GET['state']);
+$traffic_light->set_state($state);
 
 ?>
 
@@ -20,7 +22,7 @@ $traffic_light->set_state($_GET['state']);
         <div class="bulb <?= $traffic_light->yellow ? 'bulb-yellow' : '' ?>"></div>
         <div class="bulb <?= $traffic_light->green ? 'bulb-green' : '' ?>"></div>
     </div>
-    <a href="/?state=<?= $traffic_light->get_next_state($_GET['state']) ?>">=></a>
+    <a href="/?state=<?= $traffic_light->get_next_state($state) ?>">=></a>
 </body>
 
 </html>
