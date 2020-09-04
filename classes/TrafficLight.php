@@ -18,12 +18,16 @@ class TrafficLight
      */
     public $green = false;
 
+    public $state = 0;
+
     /**
      * @param int $state
      * 
      */
     public function set_state(int $state = 0)
     {
+        $this->state = $state;
+
         switch ($state) {
             case 1:
                 $this->yellow = true;
@@ -44,12 +48,11 @@ class TrafficLight
     }
 
     /**
-     * @param int $state
      * 
      * @return int The next state
      */
-    public function get_next_state(int $state = 1)
+    public function get_next_state()
     {
-        return ($state + 1) % 4;
+        return ($this->state + 1) % 4;
     }
 }
