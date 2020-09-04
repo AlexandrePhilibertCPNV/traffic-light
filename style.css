@@ -13,6 +13,7 @@ a {
     padding: 0.8em 1.2em;
     font-weight: bold;
     border-radius: 0.6em;
+    margin: 0.5em;
     text-decoration: none;
 }
 
@@ -33,17 +34,46 @@ a {
     border-radius: 50%;
     margin: 0.5em;
     background-color: grey;
+    overflow: hidden;
 
 }
 
-.bulb-red {
+.bulb-red::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: flex;
     background-color: red;
 }
 
-.bulb-yellow {
+.bulb-yellow::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: flex;
     background-color: yellow;
 }
 
-.bulb-green {
+.bulb-green::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    display: flex;
     background-color: green;
+}
+
+.bulb-blinking::before {
+    animation: blinking 5s infinite;
+}
+
+@keyframes blinking {
+    0% {
+        opacity: 0%;
+    }
+    50% {
+        opacity: 100%;
+    }
+    100% {
+        opacity: 0%;
+    }
 }

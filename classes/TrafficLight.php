@@ -20,15 +20,15 @@ class TrafficLight
 
     public $state = 0;
 
+    private $last_state;
+
     /**
      * @param int $state
      * 
      */
-    public function set_state(int $state = 0)
+    public function set_state()
     {
-        $this->state = $state;
-
-        switch ($state) {
+        switch ($this->state) {
             case 1:
                 $this->yellow = true;
                 // no break here as red also needs to be turned on
@@ -39,6 +39,7 @@ class TrafficLight
                 $this->green = true;
                 break;
             case 3:
+            case 4:
                 $this->yellow = true;
                 break;
             default:
@@ -47,12 +48,45 @@ class TrafficLight
         }
     }
 
+    public function last_state($last_state)
+    {
+        $this->last_state = $last_state;
+    }
+
     /**
+     * @param int $next_state
      * 
      * @return int The next state
      */
-    public function get_next_state()
+    public function set_next_state($next_state = null)
     {
-        return ($this->state + 1) % 4;
+        if (isset($this->last_state) && isset($next_state)) {
+            if ($this->is_next_state_allowed($next_state)) {
+                $this->state = $next_state;
+            } else {
+                $this->state = 0;
+            }
+        } else {
+            $this->state = ($this->last_state + 1) % 4;
+        }
+
+        $this->set_state();
+        return $this->state;
+    }
+
+    private function is_next_state_allowed(int $next_state)
+    {
+        switch ($this->last_state) {
+            case 0:
+                return $next_state == 1 || $next_state == 4;
+            case 1:
+                return $next_state == 2;
+            case 2:
+                return $next_state == 3 || $next_state == 4;
+            case 4:
+                return $next_state == 0 || $next_state == 4;
+            default:
+                return false;
+        }
     }
 }
