@@ -61,7 +61,7 @@ class TrafficLight
      * 
      * @return int The state to display
      */
-    public function set_next_state($next_state = null)
+    public function set_next_state($next_state = null) : int
     {
         if (isset($next_state)) {
             if ($this->is_next_state_allowed($next_state)) {
@@ -83,7 +83,12 @@ class TrafficLight
         return $this->state;
     }
 
-    private function is_next_state_allowed(int $next_state)
+    /**
+     * @param int $next_state
+     * 
+     * @return bool
+     */
+    public function is_next_state_allowed(int $next_state) : bool
     {
         switch ($this->last_state) {
             case LightState::STOP:

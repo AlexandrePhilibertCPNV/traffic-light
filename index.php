@@ -1,38 +1,30 @@
 <?php
 
-require_once 'classes/TrafficLight.php';
-
 session_start();
 
-$traffic_light = new TrafficLight();
-$traffic_light->last_state = $_SESSION['last_state'];
+$request_uri = '';
+$get_params_offset = stripos($_SERVER['REQUEST_URI'], '?');
 
-if (isset($_GET['next'])) {
-    $_SESSION['last_state'] = $traffic_light->set_next_state();
-} else if (isset($_GET['pause'])) {
-    $_SESSION['last_state'] = $traffic_light->set_next_state(LightState::PAUSE);
+// Remove GET parameters from request uri
+if ($get_params_offset) {
+    $request_uri = substr($_SERVER['REQUEST_URI'], 0, $get_params_offset);
 } else {
-    // Set the default state
-    $_SESSION['last_state'] = $traffic_light->set_next_state(LightState::STOP);
+    $request_uri = $_SERVER['REQUEST_URI'];
 }
 
-?>
+ob_start();
 
-<!DOCTYPE html>
-<html>
+switch ($request_uri) {
+    case '':
+    case '/':
+        require_once 'controllers/index.php';
+        require_once 'views/index.php';
+        break;
+    default:
+        http_response_code(404);
+        break;
+}
 
-<head>
-    <link rel="stylesheet" href="style.css">
-</head>
+$_VIEW = ob_get_clean();
 
-<body>
-    <div class="traffic-light">
-        <div class="bulb <?= $traffic_light->red ? 'bulb-red' : '' ?>"></div>
-        <div class="bulb <?= $traffic_light->yellow ? 'bulb-yellow' : '' ?> <?= $traffic_light->state == LightState::PAUSE ? 'bulb-blinking' : '' ?>"></div>
-        <div class="bulb <?= $traffic_light->green ? 'bulb-green' : '' ?>"></div>
-    </div>
-    <a href="/?next">=></a>
-    <a href="/?pause">!</a>
-</body>
-
-</html>
+require 'layout.php';
