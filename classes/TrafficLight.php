@@ -1,5 +1,13 @@
 <?php
 
+abstract class LightState {
+    const STOP = 0;
+    const READY = 1;
+    const GO = 2;
+    const SLOW = 3;
+    const PAUSE = 4;
+}
+
 class TrafficLight
 {
 
@@ -18,7 +26,7 @@ class TrafficLight
      */
     public $green = false;
 
-    public $state = 0;
+    public $state = LightState::STOP;
 
     private $last_state;
 
@@ -29,17 +37,17 @@ class TrafficLight
     public function set_state()
     {
         switch ($this->state) {
-            case 1:
+            case LightState::READY:
                 $this->yellow = true;
                 // no break here as red also needs to be turned on
-            case 0:
+            case LightState::STOP:
                 $this->red = true;
                 break;
-            case 2:
+            case LightState::GO:
                 $this->green = true;
                 break;
-            case 3:
-            case 4:
+            case LightState::SLOW:
+            case LightState::PAUSE:
                 $this->yellow = true;
                 break;
             default:
@@ -66,6 +74,8 @@ class TrafficLight
             } else {
                 $this->state = 0;
             }
+        } else if ($this->last_state == LightState::PAUSE) {
+            $this->state = LightState::STOP;
         } else {
             $this->state = ($this->last_state + 1) % 4;
         }
@@ -77,14 +87,14 @@ class TrafficLight
     private function is_next_state_allowed(int $next_state)
     {
         switch ($this->last_state) {
-            case 0:
-                return $next_state == 1 || $next_state == 4;
-            case 1:
-                return $next_state == 2;
-            case 2:
-                return $next_state == 3 || $next_state == 4;
-            case 4:
-                return $next_state == 0 || $next_state == 4;
+            case LightState::STOP:
+                return $next_state == LightState::READY || $next_state ==  LightState::PAUSE;
+            case LightState::READY:
+                return $next_state == LightState::GO;
+            case LightState::GO:
+                return $next_state == LightState::SLOW || $next_state == LightState::PAUSE;
+            case LightState::PAUSE:
+                return $next_state == LightState::STOP || $next_state == LightState::PAUSE;
             default:
                 return false;
         }
