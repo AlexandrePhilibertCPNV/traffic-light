@@ -92,6 +92,8 @@ class TrafficLight
                 return $next_state == LightState::GO;
             case LightState::GO:
                 return $next_state == LightState::SLOW || $next_state == LightState::PAUSE;
+            case LightState::SLOW:
+                return $next_state == LightState::STOP || $next_state == LightState::PAUSE;
             case LightState::PAUSE:
                 return $next_state == LightState::STOP || $next_state == LightState::PAUSE;
             default:
