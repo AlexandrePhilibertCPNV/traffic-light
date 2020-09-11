@@ -28,13 +28,13 @@ class TrafficLight
 
     public $state = LightState::STOP;
 
-    private $last_state;
+    public $last_state;
 
     /**
      * @param int $state
      * 
      */
-    public function set_state()
+    public function set_lights()
     {
         switch ($this->state) {
             case LightState::READY:
@@ -56,31 +56,30 @@ class TrafficLight
         }
     }
 
-    public function last_state($last_state)
-    {
-        $this->last_state = $last_state;
-    }
-
     /**
      * @param int $next_state
      * 
-     * @return int The next state
+     * @return int The state to display
      */
     public function set_next_state($next_state = null)
     {
-        if (isset($this->last_state) && isset($next_state)) {
+        if (isset($next_state)) {
             if ($this->is_next_state_allowed($next_state)) {
                 $this->state = $next_state;
             } else {
-                $this->state = 0;
+                // Keep old state if we were not allowed to change
+                $this->state = $this->last_state;
+                $this->set_lights();
+                return $this->state;
             }
         } else if ($this->last_state == LightState::PAUSE) {
+            // Always default to false when comming from PAUSE state
             $this->state = LightState::STOP;
         } else {
             $this->state = ($this->last_state + 1) % 4;
         }
 
-        $this->set_state();
+        $this->set_lights();
         return $this->state;
     }
 
