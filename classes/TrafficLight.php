@@ -30,6 +30,11 @@ class TrafficLight
 
     public $last_state;
 
+    public function __construct()
+    {
+        $this->last_state = LightState::STOP;
+    }
+
     /**
      * @param int $state
      * 

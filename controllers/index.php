@@ -3,7 +3,10 @@
 require_once 'classes/TrafficLight.php';
 
 $traffic_light = new TrafficLight();
-$traffic_light->last_state = $_SESSION['last_state'];
+
+if (isset($_SESSION['last_state'])) {
+    $traffic_light->last_state = $_SESSION['last_state'];
+}
 
 if (isset($_GET['next'])) {
     $_SESSION['last_state'] = $traffic_light->set_next_state();
