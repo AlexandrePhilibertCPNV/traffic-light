@@ -1,6 +1,7 @@
 <?php
 
-abstract class LightState {
+abstract class LightState
+{
     const STOP = 0;
     const READY = 1;
     const GO = 2;
@@ -61,12 +62,30 @@ class TrafficLight
         }
     }
 
+    public function get_state()
+    {
+        switch ($this->state) {
+            case LightState::READY:
+                return 'ready';
+            case LightState::STOP:
+                return 'stop';
+            case LightState::GO:
+                return 'go';
+            case LightState::SLOW:
+                return 'slow';
+            case LightState::PAUSE:
+                return 'pause';
+            default:
+                return 'stop';
+        }
+    }
+
     /**
      * @param int $next_state
      * 
      * @return int The state to display
      */
-    public function set_next_state($next_state = null) : int
+    public function set_next_state($next_state = null): int
     {
         if (isset($next_state)) {
             if ($this->is_next_state_allowed($next_state)) {
@@ -93,7 +112,7 @@ class TrafficLight
      * 
      * @return bool
      */
-    public function is_next_state_allowed(int $next_state) : bool
+    public function is_next_state_allowed(int $next_state): bool
     {
         switch ($this->last_state) {
             case LightState::STOP:
